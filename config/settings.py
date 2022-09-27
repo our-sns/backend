@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
+from datetime import timedelta
 import json
 import os
 from pathlib import Path
@@ -42,7 +43,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
-    "rest_framework_simplejwt"
+    "rest_framework_simplejwt",
     # App
     "users",
     "posts",
@@ -163,3 +164,6 @@ SIMPLE_JWT = {
     "USER_ID_CLAIM": "user_id",
     "USER_AUTHENTICATION_RULE": "rest_framework_simplejwt.authentication.default_user_authentication_rule",
 }
+
+# 사용자 인증 등을 진행할 때 사용할 모델 선언
+AUTH_USER_MODEL = "users.User"
