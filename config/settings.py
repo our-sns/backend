@@ -15,6 +15,11 @@ import json
 import os
 from pathlib import Path
 
+# db 설정 (elastic beanstalk 전용 설정)
+# __import__('pysqlite3')
+# import sys
+# sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -32,7 +37,7 @@ SECRET_KEY = secrets["DJANGO_SECRET_KEY"]
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -45,14 +50,16 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
-    "rest_framework_simplejwt",
-    # App
+    "rest_framework_simplejwt",   
+    #Apps 
     "users",
     "posts",
     "comments",
+    "corsheaders",
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -169,3 +176,14 @@ SIMPLE_JWT = {
 
 # 사용자 인증 등을 진행할 때 사용할 모델 선언
 AUTH_USER_MODEL = "users.User"
+
+# https://programmers-sosin.tistory.com/39
+# Email로 로그인 기능 구현
+# ACCOUNT_AUTHENTICATION_METHOD = 'email'  # 로그인시 username 이 아니라 email을 사용하게 하는 설정
+# ACCOUNT_EMAIL_REQUIRED = True  # 회원가입시 필수 이메일을 필수항목으로 만들기
+# ACCOUNT_USERNAME_REQUIRED = False  # USERNAME 을 필수항목에서 제거
+
+
+# 요청을 받아도 되는 리스트를 작성!
+CORS_ORIGIN_WHITELIST = ['http://127.0.0.1:8000' ,'http://localhost:8000'] 
+CORS_ALLOW_CREDENTIALS = True

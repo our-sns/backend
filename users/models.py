@@ -45,7 +45,7 @@ class User(AbstractBaseUser):
     is_admin = models.BooleanField(verbose_name="관리자 여부", default=False)
 
     created_at = models.DateTimeField(verbose_name="가입일", auto_now_add=True)
-    updated_at = models.DateTimeField(verbose_name="갱신일", auto_now=True)
+    updated_at = models.DateTimeField(verbose_name="프로필 갱신일", auto_now=True)
 
     USERNAME_FIELD = "username"
     REQUIRED_FIELDS = ["email", "password"]
