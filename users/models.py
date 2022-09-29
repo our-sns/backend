@@ -48,7 +48,7 @@ class User(AbstractBaseUser):
     updated_at = models.DateTimeField(verbose_name="갱신일", auto_now=True)
 
     USERNAME_FIELD = "username"
-    REQUIRED_FIELDS = ["email", "password", "fullname"]
+    REQUIRED_FIELDS = ["email", "password"]
 
     objects = UserManager()
 
