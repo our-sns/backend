@@ -7,10 +7,15 @@ class UserSignupSerializer(serializers.ModelSerializer):
         model = User
         fields = "__all__"
 
-    def create(self, *args **kwargs):
+    def create(self, *args, **kwargs):
         user = super().create(*args, **kwargs)
         pw = user.password
         user.set_password(pw)
         user.save()
         return user
     
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = [ "username", "email", "fullname" ]
+
