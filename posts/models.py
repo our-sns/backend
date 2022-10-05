@@ -10,7 +10,11 @@ class Post(models.Model):
     updated_at = models.DateTimeField(verbose_name="게시글 갱신일", auto_now=True)
     
     def __str__(self):
+<<<<<<< HEAD
         return f"{self.author}의 게시글"
+=======
+        return f"{self.author}님의 게시글"
+>>>>>>> ccf5d822bfdc855db884126651814cdcfab04974
     
     class Meta:
         verbose_name = "게시글"

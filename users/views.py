@@ -34,6 +34,7 @@ class UserLoginView(APIView):
     def post(self, request):
         # user = authenticate(username=request.data.get("username"), password=request.data.get("password"))
         user = authenticate(email=request.data.get("email"), password=request.data.get("password"))
+
         if user is not None:
             serialized_user_data = self.serializer_class(user)
             token = TokenObtainPairSerializer.get_token(user)
@@ -53,6 +54,7 @@ class UserLoginView(APIView):
 # https://donis-note.medium.com/django-rest-framework-authentication-permission-%EC%9D%B8%EC%A6%9D%EA%B3%BC-%EA%B6%8C%ED%95%9C-cc9b183fd901
 # https://newbiecs.tistory.com/267
 # https://jaeseo0519.tistory.com/76
+
 class UserLogoutView(APIView):
     permission_classes=[IsAuthenticated]
     
@@ -71,3 +73,4 @@ class UserLogoutView(APIView):
 # 메인 화면 접속
 def index(request):
     return redirect("login")
+

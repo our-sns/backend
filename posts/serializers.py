@@ -18,4 +18,8 @@ class PostSerializer(serializers.ModelSerializer):
       
     class Meta:
         model = Post
+<<<<<<< HEAD
         fields = ["id", "author", "content", "image", "created_at", "comments_post"]
+=======
+        fields = ["author", "content", "image", "created_at", "comments_post"]
+>>>>>>> ccf5d822bfdc855db884126651814cdcfab04974
