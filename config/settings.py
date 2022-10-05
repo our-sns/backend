@@ -185,5 +185,5 @@ ACCOUNT_USERNAME_REQUIRED = False  # USERNAME 을 필수항목에서 제거
 
 
 # 요청을 받아도 되는 리스트를 작성!
-CORS_ORIGIN_WHITELIST = ['http://127.0.0.1:8000' ,'http://localhost:8000'] 
+CORS_ORIGIN_WHITELIST = ['http://127.0.0.1:3000' ,'http://localhost:3000'] 
 CORS_ALLOW_CREDENTIALS = True

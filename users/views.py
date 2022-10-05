@@ -46,14 +46,20 @@ class UserLoginView(APIView):
         return Response({"error": "에러가 발생하였습니다."}, status=status.HTTP_400_BAD_REQUEST)
     
 # 로그아웃 
+# https://medium.com/@yunusemrecevik
 # https://medium.com/django-rest/logout-django-rest-framework-eb1b53ac6d35
+# https://medium.com/@pcj0198
+# https://medium.com/chanjongs-programming-diary/django-rest-framework-drf-환경에서-jwt-기반-authentication-세팅하기-with-simplejwt-blacklist-기법으로-보안-7db20665ee78
 # https://donis-note.medium.com/django-rest-framework-authentication-permission-%EC%9D%B8%EC%A6%9D%EA%B3%BC-%EA%B6%8C%ED%95%9C-cc9b183fd901
+# https://newbiecs.tistory.com/267
+# https://jaeseo0519.tistory.com/76
 class UserLogoutView(APIView):
     permission_classes=[IsAuthenticated]
     
     def post(self, request):
         try:
             refresh_token = request.data["refresh_token"]
+            print(refresh_token)
             token = RefreshToken(refresh_token)
             token.blacklist()
 
@@ -64,4 +70,4 @@ class UserLogoutView(APIView):
         
 # 메인 화면 접속
 def index(request):
-    return redirect("signup")
+    return redirect("login")
