@@ -8,6 +8,7 @@ class UserManager(BaseUserManager):
     def create_user(self, username, email, password=None):
         if not username:
             raise ValueError('Users must have an username')
+    # def create_user(self, email, password=None):
         if not email:
             raise ValueError("Users must have an email address")
         if not password:
@@ -15,6 +16,7 @@ class UserManager(BaseUserManager):
         email = self.normalize_email(email)
         user = self.model(
             username=username, email=email,
+            # email=email,
         )
         user.set_password(password)
         user.save(using=self._db)
@@ -22,6 +24,8 @@ class UserManager(BaseUserManager):
 
     def create_superuser(self, username, email, password=None):
         user = self.create_user(username=username, email=email, password=password)
+    # def create_superuser(self, email, password=None):
+    #     user = self.create_user(email=email, password=password)
         user.is_admin = True
         user.save(using=self._db)
         return user
@@ -34,8 +38,8 @@ class UserManager(BaseUserManager):
 # https://iamthejiheee.tistory.com/78
 # https://velog.io/@dev_dolxegod/Django-Authentication-System%EC%9D%98-%EB%AA%A8%EB%93%A0-%EA%B2%83-1-authuser-%EA%B8%B0%EB%B3%B8
 class User(AbstractBaseUser):
-    username = models.CharField(verbose_name="사용자 계정", max_length=20, unique=True)
-    email = models.EmailField(verbose_name="이메일 주소", max_length=100)
+    username = models.CharField(verbose_name="사용자 계정", max_length=20)
+    email = models.EmailField(verbose_name="이메일 주소", max_length=100, unique=True)
     password = models.CharField(verbose_name="비밀번호", max_length=128)
     fullname = models.CharField(verbose_name="이름", max_length=20)
     profile = models.ImageField(
@@ -45,15 +49,15 @@ class User(AbstractBaseUser):
     is_admin = models.BooleanField(verbose_name="관리자 여부", default=False)
 
     created_at = models.DateTimeField(verbose_name="가입일", auto_now_add=True)
-    updated_at = models.DateTimeField(verbose_name="갱신일", auto_now=True)
+    updated_at = models.DateTimeField(verbose_name="프로필 갱신일", auto_now=True)
 
-    USERNAME_FIELD = "username"
-    REQUIRED_FIELDS = ["email", "password"]
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = ["username", "password"]
 
     objects = UserManager()
 
     def __str__(self):
-        return self.username
+        return f"[ {self.username} / {self.email} ]님"
  
  # https://www.hides.kr/942
  # https://dev-yakuza.posstree.com/ko/django/custom-user-model/

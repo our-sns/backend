@@ -1,11 +1,13 @@
 from rest_framework import serializers
 from .models import Post
+from comments.serializers import CommentSerializer
 
 class PostSerializer(serializers.ModelSerializer):
     author = serializers.SerializerMethodField()
+    comments_post = CommentSerializer(many=True, required=False)
     
     def get_author(self, obj):
-        return obj.author.username
+        return obj.author.email
     
     def create(self, validated_data):
         user = self.context.get("request").user
@@ -16,4 +18,4 @@ class PostSerializer(serializers.ModelSerializer):
       
     class Meta:
         model = Post
-        fields = ["author", "title", "content", "image"]
+        fields = ["id", "author", "content", "image", "created_at", "comments_post"]
