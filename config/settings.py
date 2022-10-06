@@ -16,9 +16,9 @@ import os
 from pathlib import Path
 
 # db 설정 (elastic beanstalk 전용 설정)
-__import__('pysqlite3')
-import sys
-sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+# __import__('pysqlite3')
+# import sys
+# sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -30,12 +30,13 @@ SECRET_DIR = BASE_DIR / ".secrets"
 secrets = json.load(open(os.path.join(SECRET_DIR, "secret.json")))
 SECRET_KEY = secrets["DJANGO_SECRET_KEY"]
 
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
@@ -179,9 +180,9 @@ AUTH_USER_MODEL = "users.User"
 
 # https://programmers-sosin.tistory.com/39
 # Email로 로그인 기능 구현
-ACCOUNT_AUTHENTICATION_METHOD = 'email'  # 로그인시 username 이 아니라 email을 사용하게 하는 설정
-ACCOUNT_EMAIL_REQUIRED = True  # 회원가입시 필수 이메일을 필수항목으로 만들기
-ACCOUNT_USERNAME_REQUIRED = False  # USERNAME 을 필수항목에서 제거
+# ACCOUNT_AUTHENTICATION_METHOD = 'email'  # 로그인시 username 이 아니라 email을 사용하게 하는 설정
+# ACCOUNT_EMAIL_REQUIRED = True  # 회원가입시 필수 이메일을 필수항목으로 만들기
+# ACCOUNT_USERNAME_REQUIRED = False  # USERNAME 을 필수항목에서 제거
 
 
 # 요청을 받아도 되는 리스트를 작성!

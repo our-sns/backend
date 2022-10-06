@@ -11,11 +11,8 @@ class Comment(models.Model):
     updated_time = models.DateTimeField(verbose_name="댓글 갱신일", auto_now=True)
 
     def __str__(self):
-<<<<<<< HEAD
         return f"{self.post}에 {self.author}이 작성한 댓글 : {self.content[:31] if len(self.content) >=30 else self.content}"
-=======
-        return f"{self.author}님이 작성한 {self.post}의 댓글"
->>>>>>> ccf5d822bfdc855db884126651814cdcfab04974
+
     
     class Meta:
         verbose_name = "댓글"
