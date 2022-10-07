@@ -55,12 +55,14 @@ class UserLoginView(APIView):
 # https://newbiecs.tistory.com/267
 # https://jaeseo0519.tistory.com/76
 
+# 액세스토큰을 response의 body(열어볼수 있음)에 포함시켜서 프론트에 보내고, 리프레쉬토큰을 response의 쿠키(암호화처리)에 포함시켜서 프론트에 보냄.
+# 로그아웃 구현은 일단 보류
 class UserLogoutView(APIView):
     permission_classes=[IsAuthenticated]
     
     def post(self, request):
         try:
-            refresh_token = request.data["refresh_token"]
+            refresh_token = request.data["refresh_token"]   # body에서 데이터를 가져와라
             print(refresh_token)
             token = RefreshToken(refresh_token)
             token.blacklist()
