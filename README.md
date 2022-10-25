@@ -4,8 +4,6 @@
 
 # 🛠 <span style="color: #0000FF">나만의 SNS 만들기</span>
 
-<br>
-
 ## 🤝<span style="color: #00B050">프로젝트 팀 편성</span>
 
 🙋‍♀️ Front-end : 송희연
@@ -21,7 +19,7 @@
 
 ## 🖼 <span style="color: #00B050">프로젝트 주제 : 나만의 SNS 만들기</span>
 
-이미지 삽입 (instagram_attach)
+![instagram_attach](https://user-images.githubusercontent.com/104040502/194500007-ede15059-c796-42e5-8164-a3cce3c6cb61.png)
 
 <br>
 
