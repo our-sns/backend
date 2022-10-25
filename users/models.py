@@ -1,71 +1,53 @@
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 
-# Create your models here.
-
-
 class UserManager(BaseUserManager):
-    def create_user(self, username, email, password=None):
-        if not username:
-            raise ValueError('Users must have an username')
-    # def create_user(self, email, password=None):
+    
+    def create_user(self, email, password=None):
         if not email:
             raise ValueError("Users must have an email address")
         if not password:
             raise ValueError("Users must have a password")
         email = self.normalize_email(email)
         user = self.model(
-            username=username, email=email,
-            # email=email,
+            email=email,
         )
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, username, email, password=None):
-        user = self.create_user(username=username, email=email, password=password)
-    # def create_superuser(self, email, password=None):
-    #     user = self.create_user(email=email, password=password)
+    def create_superuser(self, email, password=None):
+        user = self.create_user(email=email, password=password)
         user.is_admin = True
         user.save(using=self._db)
         return user
     
-# http://daplus.net/django-django-%EC%9D%B4%EB%A9%94%EC%9D%BC%EB%A1%9C-%EB%A1%9C%EA%B7%B8%EC%9D%B8/
-# https://programmers-sosin.tistory.com/39
-# https://wikidocs.net/10294
-# https://developer-stories.tistory.com/17
-# https://gigle.tistory.com/174
-# https://iamthejiheee.tistory.com/78
-# https://velog.io/@dev_dolxegod/Django-Authentication-System%EC%9D%98-%EB%AA%A8%EB%93%A0-%EA%B2%83-1-authuser-%EA%B8%B0%EB%B3%B8
 class User(AbstractBaseUser):
-    username = models.CharField(verbose_name="사용자 계정", max_length=20)
     email = models.EmailField(verbose_name="이메일 주소", max_length=100, unique=True)
-    password = models.CharField(verbose_name="비밀번호", max_length=128)
     fullname = models.CharField(verbose_name="이름", max_length=20)
-    profile = models.ImageField(
-        verbose_name="프로필 사진", null=True, blank=True, upload_to="profile/image/"
-    )
+    password = models.CharField(verbose_name="비밀번호", max_length=300)
+    phone = models.CharField(verbose_name="휴대폰", max_length=15, null=True)
     is_active = models.BooleanField(verbose_name="활성 여부", default=True)
     is_admin = models.BooleanField(verbose_name="관리자 여부", default=False)
+    like_post = models.ManyToManyField("posts.Post", through='posts.Like', verbose_name="좋아요 누른 글", related_name="user_like_post")
+    like_comment = models.ManyToManyField("comments.Comment", through='comments.CommentLike', verbose_name="좋아요 누른 댓글", related_name="user_like_comment")
 
     created_at = models.DateTimeField(verbose_name="가입일", auto_now_add=True)
     updated_at = models.DateTimeField(verbose_name="프로필 갱신일", auto_now=True)
 
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = ["username", "password"]
+    REQUIRED_FIELDS = ["password"]
 
     objects = UserManager()
 
     def __str__(self):
-        return f"[ {self.username} / {self.email} ]님"
+        return self.email
  
- # https://www.hides.kr/942
- # https://dev-yakuza.posstree.com/ko/django/custom-user-model/
     def has_perm(self, perm, obj=None):
-           return self.is_admin
+        return self.is_admin
 
     def has_module_perms(self, app_label):
-       return self.is_admin
+        return self.is_admin
 
     @property
     def is_staff(self):
@@ -74,3 +56,16 @@ class User(AbstractBaseUser):
     class Meta:
         verbose_name = "사용자"
         verbose_name_plural = "사용자 목록"
+
+class Profile(models.Model):
+    owner = models.OneToOneField(to=User, on_delete=models.CASCADE, verbose_name="사용자 프로필", related_name="profile_owner")
+    picture = models.ImageField(verbose_name="프로필 사진", null=True, blank=True, upload_to="profile/image/")
+    name = models.CharField(verbose_name="프로필 이름", max_length=20, default="프로필 이름")
+    info = models.TextField(verbose_name ="프로필 소개")
+    
+    def __str__(self):
+        return f"{self.owner}의 프로필"
+    
+    class Meta:
+        verbose_name = "사용자 프로필"
+        verbose_name_plural = "사용자 프로필 목록"

@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404
-from .serializers import CommentSerializer
-from .models import Comment
+from .serializers import CommentSerializer, CommentLikeSerializer
+from .models import Comment, CommentLike
 from posts.models import Post
 from comments.permissions import CustomReadOnly
 from rest_framework import status
@@ -52,3 +52,24 @@ class CommentDetail(APIView):
         self.check_object_permissions(self.request, comment)
         comment.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+class CommentLikeList(APIView):
+    permission_classes = [CustomReadOnly]
+    authentication_classes = [JWTAuthentication]
+    serializer_class = CommentLikeSerializer
+    
+    def get(self, request):
+        id = request.user.id
+        comment_like = CommentLike.objects.filter(user=id)
+        serialized_comment_like_data = self.serializer_class(comment_like, many=True).data
+        return Response(serialized_comment_like_data, status=status.HTTP_200_OK)
+
+    def post(self, request):
+        commentId = request.GET.get('commentId')
+        comment = get_object_or_404(Comment, pk=commentId)
+        if request.user in comment.comment_like_user.all():
+            comment.comment_like_user.remove(request.user)
+            return Response({'message':'Like cancelled.'}, status=status.HTTP_200_OK)
+        else: 
+            comment.comment_like_user.add(request.user)
+            return Response({'message': 'Comment liked.'}, status=status.HTTP_200_OK)
